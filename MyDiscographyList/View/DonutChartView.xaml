@@ -38,17 +38,14 @@
                                 FontSize="20"
                                 SegmentSpacing="4"
                                 Foreground="#FFDFE0E6"
+                                LegendPlacement="TopLeft"
                                 AllowMultiSelect="False"
+                                IsManipulationEnabled="False"
+                                ShowTooltip="False"
+                                AllowClickSelection="False"
                                 ItemsSource="{Binding DonutModels}"                                
                                 InsideLabelTemplate="{StaticResource InsideLabelDataTemplate}"
                                 LegendListStyle="{StaticResource PieChartListBoxForegroundStyle}">
-
-            
-            <s:SciChartDonutSurface.ItemTemplate>
-                <DataTemplate DataType="gauge:DonutSegmentViewModel">
-                    <s:DonutSegment Fill="{Binding Fill, Mode=TwoWay}" IsSelected="{Binding IsSelected, Mode=TwoWay}" SegmentValue="{Binding Value, Mode=TwoWay}" Text="{Binding Name, Mode=TwoWay}" Stroke="{Binding Stroke, Mode=TwoWay}" StrokeThickness="{Binding StrokeThickness, Mode=TwoWay}" />
-                </DataTemplate>
-            </s:SciChartDonutSurface.ItemTemplate>
 
             <s:SciChartDonutSurface.InfoLinesStyle>
                 <Style TargetType="Line">
@@ -56,15 +53,6 @@
                 </Style>
             </s:SciChartDonutSurface.InfoLinesStyle>
 
-            <s:SciChartDonutSurface.SegmentTooltipTemplate>
-                <DataTemplate DataType="s:IPieSegmentViewModel">
-                    
-                </DataTemplate>
-            </s:SciChartDonutSurface.SegmentTooltipTemplate>
-
         </s:SciChartDonutSurface>
-
-       
-
     </Grid>
 </UserControl>
