@@ -1,0 +1,40 @@
+﻿<Window x:Class="MyDiscographyList.View.DeleteArtistConfirmView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="DeleteArtistConfirmView" 
+        Height="150" 
+        Width="400"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="Black">
+        <Grid x:Name="Bg" Opacity="0.3">
+            <Grid.Background>
+                <ImageBrush ImageSource="../Assets/equalizer.jpg" Stretch="Fill"/>
+            </Grid.Background>
+        </Grid>
+
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Are you sure you want to delete : " Style="{StaticResource font_style}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="ArtistNameTxt" Text="{Binding Path=Artist.ArtistName}" Style="{StaticResource font_style}" Margin="0,10,0,20" HorizontalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Name="okButton" Click="DeleteArtist" Command="{Binding Path=DeleteArtistCommand}" IsDefault="True" Style="{StaticResource modalBtn}">OK</Button>
+
+                <Button Name="cancelButton" IsCancel="True" Style="{StaticResource modalBtn}">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="MyDiscographyList.View.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyDiscographyList.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource GridViewStyle}">
+
+        <!--<StackPanel Orientation="Vertical">
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                <Run>Listened discographies : </Run>
+                <Run Text="{Binding Path=NbListenedDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbListenedDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>Unlistened discographies : </Run>
+                    <Run Text="{Binding Path=NbUnlistenedDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbUnlistenedDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>Following discographies : </Run>
+                    <Run Text="{Binding Path=NbFollowingDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbFollowingDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>On hold discographies : </Run>
+                    <Run Text="{Binding Path=NbOnHoldDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbOnHoldDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>Discontinued discographies : </Run>
+                    <Run Text="{Binding Path=NbDiscontinuedDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbDiscontinuedDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>Dropped discographies : </Run>
+                    <Run Text="{Binding Path=NbDroppedDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbDroppedDisco}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">
+                    <Run>Not found discographies : </Run>
+                    <Run Text="{Binding Path=NbNotFoundDisco, Mode=OneWay}" FontWeight="Bold" />
+                </TextBlock>
+                <ProgressBar Minimum="0" Maximum="{Binding Path=NbTotalDisco}" Value="{Binding Path=NbNotFoundDisco}" Width="100"/>
+            </StackPanel>
+        </StackPanel>-->
+
+        <local:DonutChartView></local:DonutChartView>
+        
+    </Grid>
+</UserControl>

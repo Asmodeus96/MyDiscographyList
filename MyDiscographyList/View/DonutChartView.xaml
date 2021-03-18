@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="MyDiscographyList.View.DonutChartView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+             xmlns:ext="http://schemas.abtsoftware.co.uk/scichart/exampleExternals"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             d:DesignHeight="400"
+             d:DesignWidth="600"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="PieChartListBoxForegroundStyle" TargetType="ListBox">
+                <Setter Property="MinWidth" Value="160"/>
+                <Setter Property="Margin" Value="30"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+
+            <DataTemplate x:Key="InsideLabelDataTemplate" DataType="s:IPieSegmentViewModel">
+                <TextBlock Foreground="Black" FontSize="14" Text="{Binding Percentage, StringFormat={}{0:#.##}%}"/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <s:SciChartDonutSurface x:Name="donutSurface"
+                                Grid.Column="1"
+                                Background="Transparent"
+                                FontSize="20"
+                                SegmentSpacing="4"
+                                Foreground="#FFDFE0E6"
+                                AllowMultiSelect="False"
+                                ItemsSource="{Binding DonutModels}"                                
+                                InsideLabelTemplate="{StaticResource InsideLabelDataTemplate}"
+                                LegendListStyle="{StaticResource PieChartListBoxForegroundStyle}">
+
+            
+            <s:SciChartDonutSurface.ItemTemplate>
+                <DataTemplate DataType="gauge:DonutSegmentViewModel">
+                    <s:DonutSegment Fill="{Binding Fill, Mode=TwoWay}" IsSelected="{Binding IsSelected, Mode=TwoWay}" SegmentValue="{Binding Value, Mode=TwoWay}" Text="{Binding Name, Mode=TwoWay}" Stroke="{Binding Stroke, Mode=TwoWay}" StrokeThickness="{Binding StrokeThickness, Mode=TwoWay}" />
+                </DataTemplate>
+            </s:SciChartDonutSurface.ItemTemplate>
+
+            <s:SciChartDonutSurface.InfoLinesStyle>
+                <Style TargetType="Line">
+                    <Setter Property="Stroke" Value="#FFDFE0E6" />
+                </Style>
+            </s:SciChartDonutSurface.InfoLinesStyle>
+
+            <s:SciChartDonutSurface.SegmentTooltipTemplate>
+                <DataTemplate DataType="s:IPieSegmentViewModel">
+                    
+                </DataTemplate>
+            </s:SciChartDonutSurface.SegmentTooltipTemplate>
+
+        </s:SciChartDonutSurface>
+
+       
+
+    </Grid>
+</UserControl>

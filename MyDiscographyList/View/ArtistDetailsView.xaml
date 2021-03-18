@@ -1,0 +1,293 @@
+﻿<UserControl x:Class="MyDiscographyList.View.ArtistDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyDiscographyList.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource GridViewStyle}">
+        <Grid HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ShowRelatedArtistList}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=ShowRelatedArtistList}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <!--Artist Details-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*"/>
+                    <ColumnDefinition Width="0.25*"/>
+                    <ColumnDefinition Width="0.12*"/>
+                    <ColumnDefinition Width="0.16*"/>
+                    <ColumnDefinition Width="0.08*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" Text="{Binding Path=Artist.ArtistName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TxtBxStyle}" Margin="0,0,5,0">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Path=ChangeArtistNameCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <TextBox Grid.Column="1" Text="{Binding Path=Artist.ArtistAlias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TxtBxStyle}"  Margin="0,0,5,0">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding Path=ChangeArtistAliasCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+
+                <ComboBox Grid.Column="2" ItemsSource="{Binding Path=ArtistStatuses}" 
+                          SelectedValuePath="StatusLabel" 
+                          SelectedValue="{Binding Path=Artist.ArtistStatus.StatusLabel}" 
+                          SelectedItem="{Binding Path=Artist.ArtistStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                          Style="{StaticResource ComboboxStyle}" 
+                          PreviewMouseDown="OnPreviewMouseDown"
+                          SelectionChanged="UpdateStatusHandler" Margin="0,5,0,5" FontSize="16">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=StatusLabel}" Foreground="{Binding Path=StatusColor}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <ComboBox Grid.Column="3" 
+                          ItemsSource="{Binding Path=ArtistScores}" 
+                          DisplayMemberPath="ScoreLabel" 
+                          SelectedValuePath="ScoreLabel" 
+                          SelectedValue="{Binding Path=Artist.ArtistScore.ScoreLabel}" 
+                          SelectedItem="{Binding Path=Artist.ArtistScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource ComboboxStyle}" 
+                          PreviewMouseDown="OnPreviewMouseDown"
+                          SelectionChanged="UpdateScoreHandler" Margin="0,5,0,5" FontSize="16"/>
+                
+                <CheckBox Grid.Column="4" 
+                          IsChecked="{Binding Path=Artist.ArtistUpToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          Command="{Binding UpdateArtistUpToDateCommand}" 
+                          Style="{StaticResource CheckBoxStyle}" 
+                          VerticalAlignment="Center" 
+                          HorizontalAlignment="Center"
+                          FontSize="16" >
+                    Up to date
+                </CheckBox>
+            </Grid>
+
+            <!--Deezer & Spotify-->
+            <Grid Grid.Row="1" Margin="0,20,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.05*"/>
+                    <ColumnDefinition Width="0.45*"/>
+                    <ColumnDefinition Width="0.36*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Command="{Binding GetDeezerRecommandationCommand}" Style="{StaticResource DeeSpotBtnStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/deezer.png"/>
+                    </StackPanel>
+                </Button>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=DeezerId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TxtBxStyle}"></TextBox>
+
+                <Grid Grid.Row="1" Height="15"/>
+
+                <Button Grid.Row="2" Grid.Column="0" Command="{Binding GetSpotifyRecommandationCommand}"  Style="{StaticResource DeeSpotBtnStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/spotify.png"/>
+                    </StackPanel>
+                </Button>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=SpotifyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TxtBxStyle}"></TextBox>
+            </Grid>
+
+            <!--Recommandation list-->
+            <!--<TextBlock Grid.Row="2" Text="Artist recommendation :" Style="{StaticResource font_style}" Margin="0,0,0,5"/>-->
+            <DataGrid Grid.Row="2" Name="dgArtistListRecommandation"
+                      DockPanel.Dock="Top"
+                      ItemsSource="{Binding ArtistsRecommandationList}" 
+                      SelectedItem="{Binding ArtistSelected ,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                      Style="{StaticResource DataGridStyle}"
+                      Margin="0,0,0,50">
+                
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Name" Width="0.50*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=ArtistName}" />
+                                    <TextBlock Text="{Binding Path=ArtistAlias}" Foreground="Gray" FontSize="14"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Status" Width="0.14*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistStatuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                      SelectedValuePath="StatusLabel"
+                                      SelectedValue="{Binding Path=ArtistStatus.StatusLabel}"
+                                      SelectedItem="{Binding ArtistStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource ComboboxStyle}" 
+                                      PreviewMouseDown="OnPreviewMouseDown"
+                                      SelectionChanged="UpdateStatusHandler">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=StatusLabel}" Foreground="{Binding Path=StatusColor}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Score" Width="0.18*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistScores, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                      DisplayMemberPath="ScoreLabel"
+                                      SelectedValuePath="ScoreLabel"
+                                      SelectedValue="{Binding ArtistScore.ScoreLabel}" 
+                                      SelectedItem="{Binding ArtistScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource ComboboxStyle}"
+                                      PreviewMouseDown="OnPreviewMouseDown"
+                                      SelectionChanged="UpdateScoreHandler"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Up to date" Width="0.12*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=ArtistUpToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Command="{Binding Path=DataContext.UpdateArtistUpToDateCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                      Foreground="White" 
+                                      HorizontalAlignment="Center"
+                                      Style="{StaticResource CheckBoxStyle}">
+                                    Up to date
+                                </CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Delete" Width="0.08*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="DeleteBtnClick" Style="{StaticResource DeleteBtnStyle}" >
+                                    <Image Source="../Assets/waste.png"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--Related List-->
+            <!--<TextBlock Text="Artist related :" Style="{StaticResource font_style}" Margin="0,0,0,5"/>-->
+            <DataGrid Grid.Row="4" Name="dgArtistListRelated" 
+                      ItemsSource="{Binding ArtistsRelatedList, Mode=TwoWay}" 
+                      SelectedItem="{Binding ArtistSelected}"  
+                      Style="{StaticResource DataGridStyle}" 
+                      MinHeight="200"
+                      CanUserAddRows="false">
+                <DataGrid.Columns>
+
+                    <DataGridTemplateColumn Header="Name" Width="0.50*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=ArtistName, Mode=TwoWay, UpdateSourceTrigger = PropertyChanged}" Style="{StaticResource TxtBxStyle}" BorderThickness="0"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Status" Width="0.14*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistStatuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                          SelectedValuePath="StatusLabel"
+                                          SelectedValue="{Binding Path=ArtistStatus.StatusLabel}"
+                                          SelectedItem="{Binding ArtistStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource ComboboxStyle}" 
+                                          PreviewMouseDown="OnPreviewMouseDown"
+                                          SelectionChanged="UpdateStatusHandler">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=StatusLabel}" Foreground="{Binding Path=StatusColor}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Score" Width="0.18*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistScores, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                          DisplayMemberPath="ScoreLabel"
+                                          SelectedValuePath="ScoreLabel"
+                                          SelectedValue="{Binding ArtistScore.ScoreLabel}" 
+                                          SelectedItem="{Binding ArtistScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource ComboboxStyle}" 
+                                          PreviewMouseDown="OnPreviewMouseDown"
+                                          SelectionChanged="UpdateScoreHandler"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Up to date" Width="0.12*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=ArtistUpToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Command="{Binding Path=DataContext.UpdateArtistUpToDateCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                      Foreground="White" 
+                                      HorizontalAlignment="Center"
+                                      Style="{StaticResource CheckBoxStyle}">
+                                    Up to date
+                                </CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Add" Width="0.08*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Path=DataContext.InsertSelectedArtistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Style="{StaticResource DeleteBtnStyle}" >
+                                    <Image Source="../Assets/addNew.png"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!--<TextBlock DockPanel.Dock="Top" Style="{StaticResource EmptyListTxtBlock}">
+                No related artist to add
+            </TextBlock> -->
+        </Grid>
+    </Grid>
+</UserControl>

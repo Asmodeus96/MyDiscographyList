@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="MyDiscographyList.View.ListDiscoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" 
+             d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Style="{StaticResource GridViewStyle}">
+
+        <DockPanel>
+
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding FirstLetterFilterList}" HorizontalAlignment="Center" BorderThickness="0" Background="Transparent" Margin="0,0,0,10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton GroupName="filterRadGp" Content="{Binding}" Command="{Binding Path=DataContext.FirstLetterFilterCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Style="{StaticResource ToggleModuleClass}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <DataGrid Name="dgArtistList" 
+                      ItemsSource="{Binding ArtistList}" 
+                      SelectedItem="{Binding ArtistSelected ,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                      Style="{StaticResource DataGridStyle}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Name" Width="0.50*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=ArtistName}" />
+                                    <TextBlock Text="{Binding Path=ArtistAlias}" Foreground="Gray" FontSize="14"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Status" Width="0.14*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistStatuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                          SelectedValuePath="StatusLabel"
+                                          SelectedValue="{Binding Path=ArtistStatus.StatusLabel}"
+                                          SelectedItem="{Binding ArtistStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource ComboboxStyle}" 
+                                          PreviewMouseDown="OnPreviewMouseDown"
+                                          SelectionChanged="UpdateStatusHandler">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=StatusLabel}" Foreground="{Binding Path=StatusColor}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Score" Width="0.18*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.ArtistScores, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                          DisplayMemberPath="ScoreLabel"
+                                          SelectedValuePath="ScoreLabel"
+                                          SelectedValue="{Binding ArtistScore.ScoreLabel}" 
+                                          SelectedItem="{Binding ArtistScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource ComboboxStyle}" 
+                                          PreviewMouseDown="OnPreviewMouseDown"
+                                          SelectionChanged="UpdateScoreHandler"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Up to date" Width="0.12*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=ArtistUpToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          Command="{Binding Path=DataContext.UpdateArtistUpToDateCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                          Foreground="White" 
+                                          HorizontalAlignment="Center"
+                                          Style="{StaticResource CheckBoxStyle}">
+                                    Up to date
+                                </CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Delete" Width="0.08*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="DeleteBtnClick" Style="{StaticResource DeleteBtnStyle}" >
+                                    <Image Source="../Assets/waste.png"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>
