@@ -27,18 +27,17 @@
         </Grid>
         
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Artist name :" Style="{StaticResource font_style}" Margin="0,20,0,0" Width="300" HorizontalAlignment="Center" />
-            <TextBox x:Name="ArtistNameTxt" Text="{Binding Path=Artist.ArtistName}" Style="{StaticResource TxtBxStyle}" Margin="0,5,0,0" Width="300"/>
+            <TextBlock Text="Artist name :" Style="{StaticResource NameTxtBlockStyle}" Margin="0,20,0,5" Width="300" HorizontalAlignment="Center" />
+            <TextBox x:Name="ArtistNameTxt" Text="{Binding Path=Artist.ArtistName}" Style="{StaticResource TxtBxStyle}" Width="300"/>
 
-            <TextBlock Text="Artist alias :" Style="{StaticResource font_style}" Margin="0,10,0,0" Width="300" HorizontalAlignment="Center" />
-            <TextBox Text="{Binding Path=Artist.ArtistAlias}" Style="{StaticResource TxtBxStyle}" Margin="0,5,0,0" Width="300"/>
+            <TextBlock Text="Artist alias :" Style="{StaticResource NameTxtBlockStyle}" Margin="0,10,0,5" Width="300" HorizontalAlignment="Center" />
+            <TextBox Text="{Binding Path=Artist.ArtistAlias}" Style="{StaticResource TxtBxStyle}" Width="300"/>
 
             <ComboBox ItemsSource="{Binding Path=ArtistStatuses}" 
                       SelectedValuePath="StatusLabel" 
                       SelectedValue="{Binding Artist.ArtistStatus.StatusLabel}" 
                       SelectedItem="{Binding Artist.ArtistStatus}"  
                       Style="{StaticResource ComboboxStyle}"
-                      Width="200"
                       Margin="0,20,0,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -52,15 +51,18 @@
                       SelectedValuePath="ScoreLabel" 
                       SelectedValue="{Binding Artist.ArtistScore.ScoreLabel}" 
                       SelectedItem="{Binding Artist.ArtistScore}" 
-                      Style="{StaticResource ComboboxStyle}" 
-                      Width="200"  
+                      Style="{StaticResource ComboboxStyle}"
                       Margin="0,15,0,0" />
 
             <CheckBox IsChecked="{Binding Path=Artist.ArtistUpToDate}" Style="{StaticResource CheckBoxStyle}" Margin="0,15,0,0" Width="80">Up to date</CheckBox>
 
-            <Button Name="okButton" Command="{Binding Path=AddArtistCommand}" IsDefault="True"  Style="{StaticResource modalBtn}" Margin="0,10,0,0">OK</Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,10">
+                <Button Name="okButton" Command="{Binding Path=AddArtistCommand}" IsDefault="True"  Style="{StaticResource modalBtn}" Margin="0,0,10,0">OK</Button>
 
-            <Button Name="cancelButton" IsCancel="True" Style="{StaticResource modalBtn}" Margin="0,10,0,0">Cancel</Button>
+                <Button Name="cancelButton" IsCancel="True" Style="{StaticResource modalBtn}" Margin="0,0,0,0">Cancel</Button>
+            </StackPanel>
+
+            
         </StackPanel>
     </Grid>
 </Window>

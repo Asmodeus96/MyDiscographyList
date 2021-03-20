@@ -4,25 +4,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
-             xmlns:ext="http://schemas.abtsoftware.co.uk/scichart/exampleExternals"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              d:DesignHeight="400"
              d:DesignWidth="600"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style x:Key="PieChartListBoxForegroundStyle" TargetType="ListBox">
-                <Setter Property="MinWidth" Value="160"/>
-                <Setter Property="Margin" Value="30"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Foreground" Value="White" />
-            </Style>
-
-            <DataTemplate x:Key="InsideLabelDataTemplate" DataType="s:IPieSegmentViewModel">
-                <TextBlock Foreground="Black" FontSize="14" Text="{Binding Percentage, StringFormat={}{0:#.##}%}"/>
-            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml"/>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/DonutChartStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -32,20 +23,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <s:SciChartDonutSurface x:Name="donutSurface"
-                                Grid.Column="1"
-                                Background="Transparent"
-                                FontSize="20"
-                                SegmentSpacing="4"
-                                Foreground="#FFDFE0E6"
-                                LegendPlacement="TopLeft"
-                                AllowMultiSelect="False"
-                                IsManipulationEnabled="False"
-                                ShowTooltip="False"
-                                AllowClickSelection="False"
-                                ItemsSource="{Binding DonutModels}"                                
-                                InsideLabelTemplate="{StaticResource InsideLabelDataTemplate}"
-                                LegendListStyle="{StaticResource PieChartListBoxForegroundStyle}">
+        <s:SciChartDonutSurface x:Name="donutSurface" Grid.Column="1" ItemsSource="{Binding DonutModels}" Style="{StaticResource DonutChartStyle}">
 
             <s:SciChartDonutSurface.InfoLinesStyle>
                 <Style TargetType="Line">

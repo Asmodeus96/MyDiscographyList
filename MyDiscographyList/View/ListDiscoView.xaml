@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MyDiscographyList;component/style/SharedStyle.xaml"/>
+                <ResourceDictionary Source="/MyDiscographyList;component/style/ArtistListStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -19,7 +20,8 @@
 
         <DockPanel>
 
-            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding FirstLetterFilterList}" HorizontalAlignment="Center" BorderThickness="0" Background="Transparent" Margin="0,0,0,10">
+            <!-- First letter filter -->
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding FirstLetterFilterList}" Style="{StaticResource ItemControlFilterStyle}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -32,23 +34,26 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            
+            <!-- Artists list-->
             <DataGrid Name="dgArtistList" 
                       ItemsSource="{Binding ArtistList}" 
                       SelectedItem="{Binding ArtistSelected ,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                       Style="{StaticResource DataGridStyle}">
+                
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Name" Width="0.50*">
+                    <DataGridTemplateColumn Header="Name" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Path=ArtistName}" />
-                                    <TextBlock Text="{Binding Path=ArtistAlias}" Foreground="Gray" FontSize="14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=ArtistName}" Margin="5,0"/>
+                                    <TextBlock Text="{Binding Path=ArtistAlias}" Foreground="Gray"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Status" Width="0.14*">
+                    <DataGridTemplateColumn Header="Status" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox ItemsSource="{Binding Path=DataContext.ArtistStatuses, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
@@ -57,7 +62,8 @@
                                           SelectedItem="{Binding ArtistStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource ComboboxStyle}" 
                                           PreviewMouseDown="OnPreviewMouseDown"
-                                          SelectionChanged="UpdateStatusHandler">
+                                          SelectionChanged="UpdateStatusHandler"
+                                          DropDownClosed="UpdateStatusHandler">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Path=StatusLabel}" Foreground="{Binding Path=StatusColor}"/>
@@ -68,7 +74,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Score" Width="0.18*">
+                    <DataGridTemplateColumn Header="Score" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox ItemsSource="{Binding Path=DataContext.ArtistScores, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
@@ -83,7 +89,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Up to date" Width="0.12*">
+                    <DataGridTemplateColumn Header="Up to date" Width="110">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding Path=ArtistUpToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -97,7 +103,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Delete" Width="0.08*">
+                    <DataGridTemplateColumn Header="Delete" Width="80">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Click="DeleteBtnClick" Style="{StaticResource DeleteBtnStyle}" >

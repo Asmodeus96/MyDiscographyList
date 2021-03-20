@@ -92,5 +92,11 @@ namespace MyDiscographyList.View
         {
             isUserInteraction = true;
         }
+
+        private void GoToArtistWebPage(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ArtistDetailsViewModel;
+            System.Diagnostics.Process.Start("https://www.google.com/search?q=" + vm.Artist.ArtistName);
+        }
     }
 }

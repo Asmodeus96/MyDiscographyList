@@ -10,7 +10,6 @@ namespace MyDiscographyList
 {
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
@@ -74,6 +73,11 @@ namespace MyDiscographyList
             userControl.ArtistSelected += new EventHandler(GoToArtistDetails);
             MainView.Items.Add(new TabItem { Content = userControl });
             MainView.Items.Refresh();
+        }
+
+        private void GoToGithub(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Asmodeus96/MyDiscographyList");
         }
     }
 }

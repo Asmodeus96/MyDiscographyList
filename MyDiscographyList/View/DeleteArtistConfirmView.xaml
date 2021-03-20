@@ -27,8 +27,8 @@
         </Grid>
 
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Are you sure you want to delete : " Style="{StaticResource font_style}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="ArtistNameTxt" Text="{Binding Path=Artist.ArtistName}" Style="{StaticResource font_style}" Margin="0,10,0,20" HorizontalAlignment="Center"/>
+            <TextBlock Text="Are you sure you want to delete : " Style="{StaticResource NameTxtBlockStyle}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="ArtistNameTxt" Text="{Binding Path=Artist.ArtistName}" Style="{StaticResource NameTxtBlockStyle}" Margin="0,10,0,20" HorizontalAlignment="Center"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Name="okButton" Click="DeleteArtist" Command="{Binding Path=DeleteArtistCommand}" IsDefault="True" Style="{StaticResource modalBtn}">OK</Button>

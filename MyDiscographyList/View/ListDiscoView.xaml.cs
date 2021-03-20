@@ -28,7 +28,7 @@ namespace MyDiscographyList.View
             ArtistSelected(this, artistREA);
         }
 
-        private void UpdateStatusHandler(object sender, RoutedEventArgs e)
+        private void UpdateStatusHandler(object sender, EventArgs e)
         {
             if (!IsLoaded || !isUserInteraction) { return; }
 
@@ -87,5 +87,6 @@ namespace MyDiscographyList.View
         {
             isUserInteraction = true;
         }
+
     }
 }

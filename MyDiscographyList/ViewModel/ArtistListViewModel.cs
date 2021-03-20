@@ -59,9 +59,31 @@ namespace MyDiscographyList.ViewModel
 
         public void UpdateArtistUpToDate(Object obj) { DataAccess.UpdateArtistUpToDate(_artistSelected); }
 
-        public void UpdateSelectedArtistStatus() { DataAccess.UpdateArtistStatus(_artistSelected); }
+        public void UpdateSelectedArtistStatus() 
+        { 
+            DataAccess.UpdateArtistStatus(ArtistSelected); 
 
-        public void UpdateSelectedArtistScore() { DataAccess.UpdateArtistScore(_artistSelected); }
+
+            switch (TypeList)
+            {
+                case TypeListEnum.Listened:
+                    if (_artistSelected.ArtistStatus.StatusId == 6)
+                    {
+                        ArtistList.Remove(_artistSelected);
+                    }
+                    break;
+                case TypeListEnum.Unlistened:
+                    
+                    if (_artistSelected.ArtistStatus.StatusId == 6)
+                    {
+                        ArtistList.Add(_artistSelected);
+                    }
+                    ArtistList.Remove(_artistSelected);
+                    break;
+            }
+        }
+
+        public void UpdateSelectedArtistScore() { DataAccess.UpdateArtistScore(ArtistSelected); }
 
         public void DeleteSelectedArtist() { ArtistList.Remove(ArtistSelected); }
 
