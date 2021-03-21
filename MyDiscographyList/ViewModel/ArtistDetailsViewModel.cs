@@ -31,6 +31,7 @@ namespace MyDiscographyList.ViewModel
         private string _spotifyId;
 
         private bool _showRelatedArtitList;
+        private bool _noRelatedToAdd;
 
         private ICommand _updateArtistUpToDateCommand;
         private ICommand _changeArtistNameCommand;
@@ -50,6 +51,7 @@ namespace MyDiscographyList.ViewModel
             ArtistsRelatedList = new ObservableCollection<ArtistModel>();
 
             ShowRelatedArtistList = false;
+            NoRelatedToAdd = false;
 
             UpdateArtistUpToDateCommand = new RelayCommand(UpdateArtistUpToDate, param => this.canExecute);
             ChangeArtistNameCommand = new RelayCommand(ChangeArtistName, param => this.canExecute);
@@ -77,6 +79,8 @@ namespace MyDiscographyList.ViewModel
         public string SpotifyId { get { return _spotifyId; } set { _spotifyId = value; } }
 
         public bool ShowRelatedArtistList { get { return _showRelatedArtitList; } set { _showRelatedArtitList = value; OnPropertyChanged("ShowRelatedArtistList"); } }
+
+        public bool NoRelatedToAdd { get { return _noRelatedToAdd; } set { _noRelatedToAdd = value; OnPropertyChanged("NoRelatedToAdd"); } }
 
 
         public ICommand UpdateArtistUpToDateCommand { get { return _updateArtistUpToDateCommand; } set { _updateArtistUpToDateCommand = value; } }
@@ -149,31 +153,77 @@ namespace MyDiscographyList.ViewModel
 
         public void UpdateRelatedList(List<string> nameList)
         {
-            foreach (var name in _artistsRecommandationList)
+            foreach (var artist in ArtistsRecommandationList)
             {
-                nameList.Remove(name.ArtistName);
-                nameList.Remove(name.ArtistAlias);
+                nameList.Remove(artist.ArtistName);
+                nameList.Remove(artist.ArtistAlias);
+            }
+
+            if (nameList.Count > 0)
+            {
+                var relatedArtistRegistred = DataAccess.CheckRelatedArtists(nameList);
+
+                foreach (var artist in relatedArtistRegistred)
+                {
+                    ArtistsRelatedList.Add(artist);
+                }
+
+                foreach (var name in ArtistsRelatedList)
+                {
+                    nameList.Remove(name.ArtistName);
+                    nameList.Remove(name.ArtistAlias);
+                }
             }
 
             foreach (var name in nameList)
             {
-                ArtistsRelatedList.Add(new ArtistModel() { ArtistName = name, ArtistScore = ArtistScores[0], ArtistStatus = ArtistStatuses[5], ArtistAlias = "", ArtistUpToDate = false });
+                ArtistsRelatedList.Add(new ArtistModel() {ArtistId = -1, ArtistName = name, ArtistScore = ArtistScores[0], ArtistStatus = ArtistStatuses[5], ArtistAlias = "", ArtistUpToDate = false });
             }
 
-            if (ArtistsRelatedList.Count > 0) ShowRelatedArtistList = true;
+            if (ArtistsRelatedList.Count > 0)
+            {
+                ShowRelatedArtistList = true;
+                NoRelatedToAdd = false;
+            }
+            else
+            {
+                ShowRelatedArtistList = false;
+                NoRelatedToAdd = true;
+            }
         }
 
         public void UpdateSelectedArtistStatus() { DataAccess.UpdateArtistStatus(_artistSelected); }
 
         public void UpdateSelectedArtistScore() { DataAccess.UpdateArtistScore(_artistSelected); }
 
-        public void InsertSelectedArtist(Object obj) 
+        public void InsertSelectedArtist(Object obj)
         {
-            var insertedId = DataAccess.AddArtist(_artistSelected);
+            int insertedId;
+
+            if (ArtistSelected.ArtistId < 0)
+            {
+                insertedId = DataAccess.AddArtist(_artistSelected);
+                _artistSelected.ArtistId = insertedId;
+            }
+            else
+            {
+                insertedId = ArtistSelected.ArtistId;
+            }
 
             DataAccess.AddRecommandation(Artist.ArtistId, insertedId);
             ArtistsRelatedList.Remove(_artistSelected);
-            if (ArtistsRelatedList.Count == 0) ShowRelatedArtistList = false;
+
+            if (ArtistsRelatedList.Count > 0)
+            {
+                ShowRelatedArtistList = true;
+                NoRelatedToAdd = false;
+            }
+            else
+            {
+                ShowRelatedArtistList = false;
+                NoRelatedToAdd = true;
+            }
+
             ArtistsRecommandationList.Add(DataAccess.GetArtistById(insertedId));
         }
 

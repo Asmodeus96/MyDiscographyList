@@ -33,6 +33,23 @@
                                 <DataTrigger Binding="{Binding Path=ShowRelatedArtistList}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="0"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=NoRelatedToAdd}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=NoRelatedToAdd}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=NoRelatedToAdd}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="auto"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
@@ -325,7 +342,7 @@
                 </DataGrid>
             </Grid>
 
-            <!--<TextBlock Grid.Row="4" Text="No related artist to add" Style="{StaticResource EmptyListTxtBlock}"/>-->
+            <TextBlock Grid.Row="5" Text="No related artist to add" Style="{StaticResource EmptyListTxtBlock}" Margin="5,10,0,0"/>
 
 
         </Grid>

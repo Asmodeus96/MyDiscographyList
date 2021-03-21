@@ -343,7 +343,7 @@ namespace DataAccessLibrary
                                                         LEFT JOIN Status st ON st.id = a.statusId 
                                                         LEFT JOIN Score sc ON sc.id = a.scoreId
                                                         WHERE r.artistId1 = @Id
-                                                    )";
+                                                    ) t ORDER BY t.name";
 
                 selectCommand.Parameters.AddWithValue("@Id", id);
                 SqliteDataReader query = selectCommand.ExecuteReader();
@@ -379,9 +379,9 @@ namespace DataAccessLibrary
                 selectCommand.Connection = db;
 
                 selectCommand.CommandText = @"SELECT a.id, a.name, a.alias, a.upToDate, a.date, st.id, st.label, st.color, sc.id, sc.label FROM Artist a LEFT JOIN Status st ON st.id = a.statusId LEFT JOIN Score sc ON sc.id = a.scoreId" +
-                    " WHERE a.name IN (\""
-                    + string.Join("\",\"", nameList) + "\") " +
-                    " OR a.alias IN (\"" + string.Join("\",\"", nameList) + "\") ORDER BY a.name ";
+                    " WHERE a.name IN (\"" + string.Join("\",\"", nameList) + "\") " +
+                    " OR a.alias IN (\"" + string.Join("\",\"", nameList) + "\") " + 
+                    "ORDER BY a.name ";
 
                 SqliteDataReader query = selectCommand.ExecuteReader();
 
