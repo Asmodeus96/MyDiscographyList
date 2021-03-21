@@ -170,7 +170,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=ArtistName}" />
+                                        <TextBlock Text="{Binding Path=ArtistName}" Margin="5,0"/>
                                         <TextBlock Text="{Binding Path=ArtistAlias}" Foreground="Gray"/>
                                     </StackPanel>
                                 </DataTemplate>

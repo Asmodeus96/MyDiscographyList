@@ -330,17 +330,19 @@ namespace DataAccessLibrary
                 selectCommand.Connection = db;
 
                 selectCommand.CommandText = @"SELECT * FROM ( 
-                                                        SELECT a.id, a.name, a.alias, a.upToDate, a.date, st.id, st.label, st.color, sc.id, sc.label FROM Artist a 
+                                                        SELECT a.id, a.name, a.alias, a.upToDate, a.date, st.id, st.label, st.color, sc.id, sc.label 
+                                                        FROM Recommandation r  
+                                                        INNER JOIN Artist a ON a.id = r.artistId1   
                                                         LEFT JOIN Status st ON st.id = a.statusId 
                                                         LEFT JOIN Score sc ON sc.id = a.scoreId
-                                                        INNER JOIN Recommandation r ON r.artistId1 = @Id
-                                                        WHERE a.id <> @Id
+                                                        WHERE r.artistId2 = @Id
                                                         UNION
-                                                        SELECT a.id, a.name, a.alias, a.upToDate, a.date, st.id, st.label, st.color, sc.id, sc.label FROM Artist a 
+                                                        SELECT a.id, a.name, a.alias, a.upToDate, a.date, st.id, st.label, st.color, sc.id, sc.label 
+                                                        FROM Recommandation r  
+                                                        INNER JOIN Artist a ON a.id = r.artistId2   
                                                         LEFT JOIN Status st ON st.id = a.statusId 
                                                         LEFT JOIN Score sc ON sc.id = a.scoreId
-                                                        INNER JOIN Recommandation r ON r.artistId2 = @Id
-                                                        WHERE a.id <> @Id
+                                                        WHERE r.artistId1 = @Id
                                                     )";
 
                 selectCommand.Parameters.AddWithValue("@Id", id);
